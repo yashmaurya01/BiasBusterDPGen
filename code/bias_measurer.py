@@ -34,13 +34,24 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 
 	def make_query(self, df):
 		df_str = df.head(3).to_string().lower()
+		print(f'Dataframe: {df_str}')
 		messages = [
 			{"role": "system", "content": self.BASE_PROMPT},
 			{"role": "user", "content": "These are the first three rows of the CSV:\n\n\"\"\"\n"+df_str+"\n\"\"\""}]
 		response = self.client.chat.completions.create(model="gpt-3.5-turbo-1106", messages=messages, functions=self.function_template, function_call={"name": "regex_gen"}, temperature=0)
 		answer = response.choices[0].message.function_call.arguments
 		generated_response = json.loads(answer)
-		return generated_response
+		print(f"Generated response: {generated_response}")
+		# Function to remove escape sequences from strings
+		# Function to remove escape sequences from strings
+		def remove_escape_sequences(text):
+			return text.replace('\x08', '')
+
+
+		# Remove escape sequences from the response
+		clean_response = {key: remove_escape_sequences(value) for key, value in generated_response.items()}
+		print(f"Clean response: {clean_response}")
+		return clean_response
 
 	def evaluate_df(self, df, generated_response):
 		scores_list = []
