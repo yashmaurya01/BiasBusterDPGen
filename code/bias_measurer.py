@@ -6,6 +6,8 @@ import re
 class BiasMeasure:
 	def __init__(self, openai_api_key, bias_category="Gender", category_1_name="male", category_2_name="female"):
 		self.client = OpenAI(api_key=openai_api_key)
+		self.category_1_name = category_1_name
+		self.category_2_name = category_2_name
 		self.BASE_PROMPT = f"""
 So here are the first 3 rows of a CSV file, our client is analyzing. We want to use RegEx, to find out whether the dataset is {bias_category} biased, so each row of the CSV file will be treated as a string and you've to create two regex queries, one which represents category 1: {category_1_name} and the other category 2: {category_2_name}. Return two regex queries and ensure, there's no sequences which will fall in both. Based on the CSV record, if say there is a column called "Gender" or "Sex", when discussing Gender Bias, or any other column which directly represents the {bias_category}, then mention the identities from it, else if its pure string or no such column is detected use other strings like pronouns, gendered words, etc.
 		"""
@@ -43,12 +45,17 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 	def evaluate_df(self, df, generated_response):
 		scores_list = []
 		for index, row in df.iterrows():
-			row_str = row.to_string()
+			row_str = ', '.join(str(value) for value in row.values)
+			print(row_str)
 			row_scores = {'regex_category_1': 0, 'regex_category_2': 0}
 			for key, regex_pattern in generated_response.items():
+				print(regex_pattern)
 				row_scores[key] = len(re.findall(regex_pattern, row_str, re.IGNORECASE))
+			print(row_scores)
 			scores_list.append(row_scores)
+			exit()
 		scores_df = pd.DataFrame(scores_list)
+		scores_df.rename(columns={'regex_category_1': f'{self.category_1_name}', 'regex_category_2': f'{self.category_2_name}'}, inplace=True)
 		print(scores_df.describe())
 
 		
