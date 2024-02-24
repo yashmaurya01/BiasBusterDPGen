@@ -14,7 +14,7 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 		self.function_template = [
 			{
 				"name": "regex_gen",
-				"description": f"You have to return two RegEx strings, one to represent {category_1_name} and the other to represent {category_2_name}. These regex strings/sequences have to be based on the CSV record, if say there is a column called \"Gender\" or \"Sex\", when discussing Gender Bias, or any other column which directly represents the {bias_category}, then mention the identities from it, else if its pure string or no such column is detected use other strings like pronouns, etc. then your regex should include a space before and after the pronouns. However, remember that if its simply a columnar data then it'll not have these spaces, so in those cases do not include space. Ensure no sequence is common between the two regex.",
+				"description": f"You have to return two RegEx strings, one to represent {category_1_name} and the other to represent {category_2_name}. These regex strings/sequences have to be based on the CSV record, if say there is a column called \"Gender\" or \"Sex\", when discussing Gender Bias, or any other column which directly represents the {bias_category}, then mention the identities from it, else if its pure string or no such column is detected use other strings like pronouns, etc. then your regex should include a space before and after the pronouns. However, remember that if its simply a columnar data then it'll not have these spaces, so in those cases do not include space. Ensure no sequence is common between the two regex. Note: Each RegEx shouldn't contain more than 10 sequences.",
 				"parameters": {
 					"type": "object",
 					"properties": {
@@ -56,7 +56,7 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 		scores_list = []
 		for index, row in df.iterrows():
 			# print()
-			row_str = ', '.join(str(value) for value in row.values)
+			row_str = '"'+'", "'.join(str(value) for value in row.values)+'"'
 			# print(row_str)
 			row_scores = {'regex_category_1': 0, 'regex_category_2': 0}
 			for key, regex_pattern in generated_response.items():
