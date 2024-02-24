@@ -13,6 +13,7 @@ def process_line(line):
     cleaned_line = ' '.join(parts[1:])
     cleaned_line = cleaned_line.replace('[', '').replace(']', '')
     return cleaned_line
+
 # Define file paths
 anti_files = [
     '../raw/nlp/anti_stereotyped_type1.txt.dev',
@@ -40,16 +41,17 @@ with open(output_combined_file, 'w', newline='') as outfile:
     csv_writer = csv.writer(outfile)
     csv_writer.writerow(['Text'])  # Write header
 
-    # Write rows from anti_files
+    # Write only the first 525 rows from anti_files
     with open(combined_anti_file, 'r') as infile:
-        for line in infile:
-            cleaned_line = process_line(line)
-            csv_writer.writerow([cleaned_line.strip()])
+        for i, line in enumerate(infile):
+            if i < 525:
+                cleaned_line = process_line(line)
+                csv_writer.writerow([cleaned_line.strip()])
 
-    # Write rows from pro_files
+    # Write all rows from pro_files
     with open(combined_pro_file, 'r') as infile:
         for line in infile:
             cleaned_line = process_line(line)
             csv_writer.writerow([cleaned_line.strip()])
 
-print("All lines from anti_files and pro_files have been copied and saved to the output file.")
+print("525 rows from anti_files and all rows from pro_files have been copied and saved to the output file.")
