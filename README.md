@@ -1,1 +1,2 @@
-# BiasBusterDPGen (B~2~-DPG)
+# BiasBusterDPGen (B<sub>2</sub>DPG)
+
