@@ -71,9 +71,10 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 			else:
 				row_scores['regex_category_1'] = 0
 				row_scores['regex_category_2'] = 0
+			row_scores["row_str"] = row_str
 			scores_list.append(row_scores)
 		scores_df = pd.DataFrame(scores_list)
 		scores_df.rename(columns={'regex_category_1': f'{self.category_1_name}', 'regex_category_2': f'{self.category_2_name}'}, inplace=True)
-		print(scores_df.describe())
+		return scores_df
 
 		
