@@ -15,4 +15,5 @@ Observe the following CSV row, observe the , and the " and figure out the struct
 			{"role": "user", "content": "Here is the row:\n\n\"\"\"\n"+row+"\n\"\"\"\n\nSynethetic Counterfactual Sample:"}
 		]
 		response = self.client.chat.completions.create(model="gpt-3.5-turbo-1106", messages=messages, temperature=0)
-		print(response)
+		answer = response.choices[0].message.content
+		print(answer)
