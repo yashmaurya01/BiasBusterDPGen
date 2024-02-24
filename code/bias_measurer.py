@@ -34,15 +34,14 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 
 	def make_query(self, df):
 		df_str = df.head(3).to_string().lower()
-		print(f'Dataframe: {df_str}')
+		# print(f'Dataframe: {df_str}')
 		messages = [
 			{"role": "system", "content": self.BASE_PROMPT},
 			{"role": "user", "content": "These are the first three rows of the CSV:\n\n\"\"\"\n"+df_str+"\n\"\"\""}]
 		response = self.client.chat.completions.create(model="gpt-3.5-turbo-1106", messages=messages, functions=self.function_template, function_call={"name": "regex_gen"}, temperature=0)
 		answer = response.choices[0].message.function_call.arguments
 		generated_response = json.loads(answer)
-		print(f"Generated response: {generated_response}")
-		# Function to remove escape sequences from strings
+		# print(f"Generated response: {generated_response}")
 		# Function to remove escape sequences from strings
 		def remove_escape_sequences(text):
 			return text.replace('\x08', '')
@@ -50,7 +49,7 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 
 		# Remove escape sequences from the response
 		clean_response = {key: remove_escape_sequences(value) for key, value in generated_response.items()}
-		print(f"Clean response: {clean_response}")
+		# print(f"Clean response: {clean_response}")
 		return clean_response
 
 	def evaluate_df(self, df, generated_response):
@@ -64,7 +63,6 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 				row_scores[key] = len(re.findall(regex_pattern, row_str, re.IGNORECASE))
 			print(row_scores)
 			scores_list.append(row_scores)
-			exit()
 		scores_df = pd.DataFrame(scores_list)
 		scores_df.rename(columns={'regex_category_1': f'{self.category_1_name}', 'regex_category_2': f'{self.category_2_name}'}, inplace=True)
 		print(scores_df.describe())
