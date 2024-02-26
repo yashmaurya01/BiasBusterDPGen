@@ -1,3 +1,4 @@
 from .bias_measurer import BiasMeasure
 from .find_seed import FindSeed
 from .synthetic_generator import PromptSyntheticGenerator
+from .dp_synthetic_generator import DPPromptSyntheticGenerator
