@@ -81,7 +81,6 @@ Observe the following data points and figure out the structure of the dataset, f
 				scores = [item[1] for item in next_out]
 				probabilities = softmax(scores)
 				exp_mech = Exponential(epsilon=self.epsilon, sensitivity=1.0, utility=probabilities.tolist())
-				median(probabilities, bounds=(0, 1), epsilon=self.epsilon, accountant=acc)
 				index_of_choice = exp_mech.randomise()
 				new_string += next_out[index_of_choice][0]
 				if '"' in next_out[index_of_choice][0]:
@@ -90,6 +89,5 @@ Observe the following data points and figure out the structure of the dataset, f
 					quote_in = False
 			if stop_reason!="length":
 				break
-			print("Privacy Accounted:", acc.total())
 			print(new_string)
 		print("Loop fucking ended")
