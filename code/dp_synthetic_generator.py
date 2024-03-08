@@ -20,8 +20,7 @@ Observe the following data points and figure out the structure of the dataset, f
 Note: Do not mention anything else, simply begin with the new sample.
 		"""
 
-	def generate_next_logprob(self, samples, generated_till_now=None):
-		samples = samples.replace('"', '')
+	def generate_next_logprob(self, samples, generated_till_now=None, max_tokens=10):
 		time.sleep(3)
 		if generated_till_now is None:
 			print(samples)
@@ -36,7 +35,7 @@ Note: Do not mention anything else, simply begin with the new sample.
 				{"role": "system", "content": "Remember the samples provided, follow the structure given. No double quotes or incorrect ',' placements. Do not repeat '\"', you should never generate a '\"\"' or a '\"\"\"'. Ensure that you will continue from where you left off in your response after your last line as if nothing happened, ensuring you will not repeat anything, here is the rest of the response you've generated till now! Do not repeat \" or , if you previously mentioned them. Remember whatever you output will be directly appended to the previous string, so if the previous string ends with \" do not begin your next text with it. Understand that you're continuing the previous string as it is. You are not creating your own stuff, use as few \" as you can. Ensure there's no repeating \" \" spaces. Be concise."},
 				{"role": "assistant", "content": str(generated_till_now)}
 			]
-		response = self.client.chat.completions.create(model="gpt-3.5-turbo-1106", seed=0, messages=messages, temperature=1, n=5, max_tokens=5)
+		response = self.client.chat.completions.create(model="gpt-3.5-turbo-1106", seed=0, messages=messages, temperature=1, n=5, max_tokens=max_tokens)
 		options = []
 		for idx, choice in enumerate(response.choices):
 			options.append({"finish_reason":choice.finish_reason, "message":choice.message.content, "p":(len(response.choices)-(idx))/len(response.choices)})

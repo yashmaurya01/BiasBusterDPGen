@@ -75,6 +75,6 @@ So here are the first 3 rows of a CSV file, our client is analyzing. We want to 
 			scores_list.append(row_scores)
 		scores_df = pd.DataFrame(scores_list)
 		scores_df.rename(columns={'regex_category_1': f'{self.category_1_name}', 'regex_category_2': f'{self.category_2_name}'}, inplace=True)
-		return scores_df
+		return scores_df, scores_df[[f'{self.category_1_name}', f'{self.category_2_name}']].describe()
 
 		
