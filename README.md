@@ -42,3 +42,10 @@
 ### Impact and Utility
 
 This project introduces a comprehensive framework for detecting, analyzing, and mitigating bias in datasets using state-of-the-art LLMs and NLP techniques. It not only aids in uncovering subtle biases within data but also provides a novel approach to creating balanced datasets through synthetic counterfactuals, enhancing the fairness of machine learning models derived from such data. Additionally, by incorporating differential privacy into synthetic data generation, the project addresses critical concerns regarding data privacy, making it a pioneering effort towards responsible AI development. This endeavor promises to set new standards in ethical data science practices, significantly benefiting researchers, data scientists, and organizations striving for equity and privacy in their analytical and predictive models.
+
+### Datasets Experimented With:
+1. Wino Dataset
+2. Wiki Subset
+3. Adult
+4. Credit
+5. COMPAS - Correctional Offender Management Profiling for Alternative Sanctions
