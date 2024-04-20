@@ -1,6 +1,7 @@
 import streamlit as st
 from code import BiasMeasure, FindSeed, PromptSyntheticGenerator, DPPromptSyntheticGenerator
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Function to read the API key from a hidden file
 @st.cache(allow_output_mutation=True)
@@ -38,8 +39,19 @@ if uploaded_file is not None:
         st.write("RegEx Queries Constructed")
         
         scores_df, measure_df = bm.evaluate_df(df, regex_queries)
-        st.write("Score and Measure DataFrames Generated")
-        st.dataframe(measure_df)
+        mean_values = measure_df.loc['mean', :].to_dict()
+        category_means = {
+            category1: mean_values['male'],
+            category2: mean_values['female']
+        }
+
+        # Pie chart visualization
+        fig, ax = plt.subplots()
+        ax.pie(category_means.values(), labels=category_means.keys(), autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        st.write("Bias Distribution in Data")
+        st.pyplot(fig)
         
         fs = FindSeed(column_name)
         seed_rows, example_counterfactuals = fs.find_seeds(scores_df)
@@ -47,11 +59,12 @@ if uploaded_file is not None:
         st.dataframe(example_counterfactuals)
         
         psg = PromptSyntheticGenerator(openai_api_key)
-        for majority_sample in seed_rows:
-            st.write("Majority Sample:", majority_sample)
+        for majority_sample in seed_rows[:3]:
+            st.markdown("### Majority Sample:")
+            st.info(majority_sample)
+            st.markdown("### Minority Sample Generated:")
             minority_sample = psg.generate_synthetic(majority_sample)
-            st.write("Minority Sample Generated:", minority_sample)
-            break
+            st.success(minority_sample)
         
         # st.write("DP Synthetic Data Generation")
         # dppsg = DPPromptSyntheticGenerator(openai_api_key, df)

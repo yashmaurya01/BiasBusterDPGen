@@ -28,7 +28,7 @@ for majority_sample in seed_rows:
 	print(majority_sample)
 	print()
 	print("Minority Sample")
-	psg.generate_synthetic(majority_sample)
+	print(psg.generate_synthetic(majority_sample))
 	break
 print()
 print("DP Synthetic Data Generation")
