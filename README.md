@@ -1,3 +1,5 @@
+<img src="https://github.com/yashmaurya01/BiasBusterDPGen/blob/main/logo.png" width="30%" height="30%" align="right" />
+
 # BiasBusterDPGen (B<sub>2</sub>DPG)
 
 ### Detailed Project Proposal: Key Steps and Sub-Steps
